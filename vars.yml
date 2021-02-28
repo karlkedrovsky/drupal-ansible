@@ -1,0 +1,16 @@
+PROJECT_NAME: drupal-ansible
+PROJECT_BASE_URL: drupal-ansible.bolivar.kedrovsky.com
+
+DB_NAME: drupal
+DB_USER: drupal
+DB_PASSWORD: drupal
+DB_ROOT_PASSWORD: password
+DB_HOST: mariadb
+DB_PORT: 3306
+DB_DRIVER: mysql
+
+NGINX_TAG: 1.19
+
+PHP_TAG: 7.4-dev
+
+MARIADB_TAG: 10.5
