@@ -23,16 +23,18 @@
           NGINX_BACKEND_HOST: '{{ PROJECT_NAME }}-php'
           NGINX_BACKEND_PORT: '9000'
         labels:
-          'traefik.enable': 'true'
-          'traefik.http.middlewares.{{ PROJECT_NAME }}-https.redirectscheme.scheme': 'https'
-          'traefik.http.middlewares.{{ PROJECT_NAME }}-https.redirectscheme.permanent': 'true'
-          'traefik.http.routers.{{ PROJECT_NAME }}-http.entrypoints': 'web'
-          'traefik.http.routers.{{ PROJECT_NAME }}-http.rule': 'Host(`{{ PROJECT_NAME }}.bolivar.kedrovsky.com`)'
-          'traefik.http.routers.{{ PROJECT_NAME }}-http.middlewares': '{{ PROJECT_NAME }}-https@docker'
-          'traefik.http.routers.{{ PROJECT_NAME }}.entrypoints': 'websecure'
-          'traefik.http.routers.{{ PROJECT_NAME }}.rule': 'Host(`{{ PROJECT_NAME }}.bolivar.kedrovsky.com`)'
-          'traefik.http.routers.{{ PROJECT_NAME }}.tls': 'true'
-          'traefik.http.routers.{{ PROJECT_NAME }}.tls.certresolver': 'myresolver'
+          '{
+             "traefik.enable": "true",
+             "traefik.http.middlewares.{{ PROJECT_NAME }}-https.redirectscheme.scheme": "https",
+             "traefik.http.middlewares.{{ PROJECT_NAME }}-https.redirectscheme.permanent": "true",
+             "traefik.http.routers.{{ PROJECT_NAME }}-http.entrypoints": "web",
+             "traefik.http.routers.{{ PROJECT_NAME }}-http.rule": "Host(`{{ PROJECT_NAME }}.bolivar.kedrovsky.com`)",
+             "traefik.http.routers.{{ PROJECT_NAME }}-http.middlewares": "{{ PROJECT_NAME }}-https@docker",
+             "traefik.http.routers.{{ PROJECT_NAME }}.entrypoints": "websecure",
+             "traefik.http.routers.{{ PROJECT_NAME }}.rule": "Host(`{{ PROJECT_NAME }}.bolivar.kedrovsky.com`)",
+             "traefik.http.routers.{{ PROJECT_NAME }}.tls": "true",
+             "traefik.http.routers.{{ PROJECT_NAME }}.tls.certresolver": "myresolver"
+          }'
     - name: deploy php container
       docker_container:
         name: '{{ PROJECT_NAME }}-php'
