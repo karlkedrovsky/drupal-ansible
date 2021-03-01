@@ -4,7 +4,7 @@ This is meant to be a starter template for setting up docker containers for runn
 
 The containers used are from [Wodby](https://wodby.com/) and the following referencess are helpful when configuring the playbook.
 
-* [docker-compose.yml](https://github.com/wodby/docker4drupal/blob/master/docker-compose.yml) for contaier configuration.
+* [docker-compose.yml](https://github.com/wodby/docker4drupal/blob/master/docker-compose.yml) for container configuration.
 * [Available environment variables for configuration](https://github.com/wodby/docker4drupal/blob/master/.env)
 * [Wodby Drupal stack docs](https://wodby.com/docs/1.0/stacks/drupal/)
 
@@ -20,7 +20,7 @@ Copy/fork this repo, update the "PROJECT_NAME" variable in the "vars" file and r
 
     ansible-playbook -i inventory.bolivar --connection=local playbook.yml
 
-Obviously using a different inventory file and potentially not specifying the "--connection" optiono if you're not creating the containers on your local machine that is named "bolivar".
+Obviously using a different inventory file and potentially not specifying the "--connection" option if you're not creating the containers on your local machine that is named "bolivar".
 
 To install a fresh copy of Drupal:
 
@@ -32,3 +32,22 @@ Then visit the site and complete the site setup.
 This setup assumes you've already set up the [traefik container](https://github.com/karlkedrovsky/traefik-ansible) on the machine to handle inbound traffic.
 
 The Lets Encrypt integration assumes that your computer is accessible from the internet and port 80 is accepting requests for any sub-domain ending in bolivar.kedrovsky.com.
+
+## Removing The Containers
+
+If there's ever a need to stop and remove the containers just run:
+
+    ansible-playbook -i inventory.bolivar --connection=local playbook-remove.yml
+
+## Basic Auth
+
+Generate a password using:
+
+    openssl passwd -apr1
+
+Update the basicauth and middleware labels in the web server config of the playbook with the new user and password. The default user/password in the playbook is drupal/drupal.
+
+To remove the basic auth just remove the these two labels
+
+    "traefik.http.middlewares.{{ PROJECT_NAME }}-auth.basicauth.users": "drupal:$apr1$w/XbxD2m$mTZm7UFIOga16nuhiS87Q0"
+    "traefik.http.routers.{{ PROJECT_NAME }}.middlewares": "{{ PROJECT_NAME }}-auth"

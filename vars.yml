@@ -5,9 +5,6 @@ DB_NAME: drupal
 DB_USER: drupal
 DB_PASSWORD: drupal
 DB_ROOT_PASSWORD: password
-DB_HOST: mariadb
-DB_PORT: 3306
-DB_DRIVER: mysql
 
 NGINX_TAG: 1.19
 

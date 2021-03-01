@@ -3,7 +3,7 @@
   vars_files:
     - ./vars.yml
   tasks:
-    - name: create drupal-ansible network
+    - name: create {{ PROJECT_NAME }} network
       docker_network:
         name: '{{ PROJECT_NAME }}'
     - name: deploy web conainer
@@ -14,7 +14,7 @@
           - './site:/var/www/html'
         networks:
           - name: web
-          - name: drupal-ansible
+          - name: '{{ PROJECT_NAME }}'
         purge_networks: yes
         restart_policy: unless-stopped
         env:
@@ -27,9 +27,11 @@
              "traefik.enable": "true",
              "traefik.http.middlewares.{{ PROJECT_NAME }}-https.redirectscheme.scheme": "https",
              "traefik.http.middlewares.{{ PROJECT_NAME }}-https.redirectscheme.permanent": "true",
+             "traefik.http.middlewares.{{ PROJECT_NAME }}-auth.basicauth.users": "drupal:$apr1$w/XbxD2m$mTZm7UFIOga16nuhiS87Q0",
              "traefik.http.routers.{{ PROJECT_NAME }}-http.entrypoints": "web",
              "traefik.http.routers.{{ PROJECT_NAME }}-http.rule": "Host(`{{ PROJECT_NAME }}.bolivar.kedrovsky.com`)",
              "traefik.http.routers.{{ PROJECT_NAME }}-http.middlewares": "{{ PROJECT_NAME }}-https@docker",
+             "traefik.http.routers.{{ PROJECT_NAME }}.middlewares": "{{ PROJECT_NAME }}-auth",
              "traefik.http.routers.{{ PROJECT_NAME }}.entrypoints": "websecure",
              "traefik.http.routers.{{ PROJECT_NAME }}.rule": "Host(`{{ PROJECT_NAME }}.bolivar.kedrovsky.com`)",
              "traefik.http.routers.{{ PROJECT_NAME }}.tls": "true",
@@ -42,7 +44,7 @@
         volumes:
           - './site:/var/www/html'
         networks:
-          - name: drupal-ansible
+          - name: '{{ PROJECT_NAME }}'
         purge_networks: yes
         restart_policy: unless-stopped
         env:
@@ -54,7 +56,7 @@
         volumes:
           - './data:/var/lib/mysql'
         networks:
-          - name: drupal-ansible
+          - name: '{{ PROJECT_NAME }}'
         purge_networks: yes
         restart_policy: unless-stopped
         env:
