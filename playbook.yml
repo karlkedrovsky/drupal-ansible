@@ -19,7 +19,7 @@
         restart_policy: unless-stopped
         env:
           NGINX_VHOST_PRESET: 'drupal9'
-          NGINX_SERVER_ROOT: '/var/www/html/web'
+          NGINX_SERVER_ROOT: '/var/www/html'
           NGINX_BACKEND_HOST: '{{ PROJECT_NAME }}-php'
           NGINX_BACKEND_PORT: '9000'
         labels:
@@ -48,7 +48,7 @@
         purge_networks: yes
         restart_policy: unless-stopped
         env:
-          APP_ROOT: '/var/www/html/web'
+          APP_ROOT: '/var/www/html'
     - name: deploy db container
       docker_container:
         name: '{{ PROJECT_NAME }}-db'

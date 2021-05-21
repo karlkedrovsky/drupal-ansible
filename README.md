@@ -18,6 +18,7 @@ The settings for the environment variables referenced above are kept in the vars
 
 Copy/fork this repo, update the "PROJECT_NAME" variable in the "vars" file and run:
 
+    rm site/.gitkeep
     ansible-playbook -i inventory.bolivar --connection=local playbook.yml
 
 Obviously using a different inventory file and potentially not specifying the "--connection" option if you're not creating the containers on your local machine that is named "bolivar".
