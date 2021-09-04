@@ -48,7 +48,11 @@ Generate a password using:
 
 Update the basicauth and middleware labels in the web server config of the playbook with the new user and password. The default user/password in the playbook is drupal/drupal.
 
-To remove the basic auth just remove the these two labels
+To remove the basic auth just remove the these labels
 
-    "traefik.http.middlewares.{{ PROJECT_NAME }}-auth.basicauth.users": "drupal:$apr1$w/XbxD2m$mTZm7UFIOga16nuhiS87Q0"
+    "traefik.http.middlewares.{{ PROJECT_NAME }}-auth.basicauth.users": "{{ BASIC_AUTH_USER }}:{{ BASIC_AUTH_PASSWORD }}"
+    "traefik.http.middlewares.{{ PROJECT_NAME }}-mailhog-auth.basicauth.users": "{{ BASIC_AUTH_USER }}:{{ BASIC_AUTH_PASSWORD }}"
+
     "traefik.http.routers.{{ PROJECT_NAME }}.middlewares": "{{ PROJECT_NAME }}-auth"
+    "traefik.http.routers.{{ PROJECT_NAME }}-mailhog.middlewares": "{{ PROJECT_NAME }}-mailhog-auth"
+
